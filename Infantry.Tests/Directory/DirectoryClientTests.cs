@@ -1,5 +1,6 @@
 namespace Infantry.Tests
 {
+    using Infantry.Client.Directory;
     using Infantry.Directory;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Net;

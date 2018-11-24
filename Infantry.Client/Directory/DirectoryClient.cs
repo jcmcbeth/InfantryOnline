@@ -1,5 +1,6 @@
-﻿namespace Infantry.Directory
+﻿namespace Infantry.Client.Directory
 {
+    using Infantry.Directory;
     using Infantry.Network;
     using System;
     using System.Collections.Generic;

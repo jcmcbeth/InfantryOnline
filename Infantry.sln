@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Common", "Infantry
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Tests", "Infantry.Tests\Infantry.Tests.csproj", "{D1E833E9-4A61-44D1-8F58-14187C148FAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Client", "Infantry.Client\Infantry.Client.csproj", "{26F7530E-D4B7-46A7-8FA6-50C840405BA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infantry.Client\Infantry.Client.csproj" />
     <ProjectReference Include="..\Infantry.Common\Infantry.Common.csproj" />
   </ItemGroup>
 
