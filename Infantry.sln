@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Common", "Infantry.Common\Infantry.Common.csproj", "{2D290BCD-0604-4BF1-8825-839B95AB9EE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Tests", "Infantry.Tests\Infantry.Tests.csproj", "{D1E833E9-4A61-44D1-8F58-14187C148FAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2D290BCD-0604-4BF1-8825-839B95AB9EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D290BCD-0604-4BF1-8825-839B95AB9EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D290BCD-0604-4BF1-8825-839B95AB9EE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E833E9-4A61-44D1-8F58-14187C148FAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
