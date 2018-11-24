@@ -47,12 +47,24 @@
                 bytes[i] = textBytes[i];
             }
 
-            buffer.AddRange(buffer);
+            buffer.AddRange(bytes);
         }
 
         public byte[] GetBytes()
         {
             return buffer.ToArray();
+        }
+
+        /// <summary>
+        /// Adds the specified number of zero bytes to the packet.
+        /// </summary>
+        /// <param name="count">The number of zero bytes to add.</param>
+        public void AddPadding(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                buffer.Add(0);
+            }
         }
 
         public void AddInt16(short data)

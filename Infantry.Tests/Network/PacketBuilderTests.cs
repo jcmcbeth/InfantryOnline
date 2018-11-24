@@ -40,5 +40,16 @@
             Assert.AreEqual(3, actual[2]);
             Assert.AreEqual(4, actual[3]);
         }
+
+        [TestMethod]
+        public void AddPadding_PositivePaddingAmount_GetBytesReturnsPadding()
+        {
+            this.target.AddPadding(10);
+
+            var expected = new byte[10];
+            var actual = this.target.GetBytes();
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

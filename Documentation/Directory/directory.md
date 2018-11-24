@@ -32,11 +32,17 @@ Length: 8
 ### Request (C->S)
 Length: 41
 
-WORD		ID 			// Packet ID (0x0003)
-BYTE[6]		Unknown1	// seen all zeros
-BYTE		Unknown2	// Seen 0x01
-CHAR[9]		Client Name?	// Seen "Infantry"
-BYTE[23]	Unknown3
+|Data Type	|Name			|Value		|Notes			|
+|-----------|---------------|-----------|---------------|
+|WORD		|ID				|0x0003		|Packet ID		|
+|BYTE[6]	|Unknown		|			|Seen all zeros |
+|BYTE		|Unknown		|			|Seen 0x01		|
+|CHAR[9]	|Client Name?	|			|Seen "Infantry"|
+|WORD		|Unknown		|			|Seen 0xa00f	|
+|DWORD		|Unknown		|			|Changes per request|
+|BYTE		|Unknown		|			|Seen 0x00		|
+|WORD		|Unknown		|			|Changes per request|
+|BYTE[14]	|Unknown		|			|Seen 00 80 a7 8f 77 51 da 42 00 64 f4 19 00 00|
 
 
 ## Zonelist
@@ -61,11 +67,13 @@ The length is variable and depends on the number of zones. If the number of zone
 |WORD     	|2		|ID				|0x0003		|Packet ID			|
 |WORD		|2		|Unknown		|			|Seen 0x00000000	|
 |BYTE		|1		|ChunkNumber	|			|Which chunk it is in the sequence. Starts at 0.|
-|BYTE[8]	|8		|Unknown		|			|					|
-|WORD		|2		|ChunkLength	|			|Total size of the chunked data.|
+|BYTE[4]	|4		|Unknown		|			|Seen all zeros		|
+|BYTE		|1		|Unknown		|			|Seen 0x08			|
+|BYTE[2]	|2		|Unknown		|			|Seen all zeros		|
+|WORD		|2		|ChunkLength	|			|Total size of the chunked data in little endian format.|
 |BYTE[2]	|2		|Unknown		|			|					|
 
-Repeats for each zone:
+The zone data starts with a single byte, 0x01. Then the following is repeated for each zone:
 
 |Data Type	|Length	|Name			|Value		|Notes							|
 |-----------|-------|---------------|-----------|-------------------------------|
@@ -90,8 +98,8 @@ Length: 8
 |-----------|-------|---------------|-----------|-------------------|
 |WORD     	|2		|ID				|0x000B		|Packet ID			|
 |WORD		|2		|Unknown		|			|Seen 0x0000		|
-|WORD		|2		|ChunkNumber	|			|Which chunk in the sequence that was acknowledged. Starts at 0.|
-|WORD		|2		|Unknown		|			|Seen 0x0000		|
+|BYTE		|1		|ChunkNumber	|			|Which chunk in the sequence that was acknowledged. Starts at 0.|
+|BYTE[3]	|3		|Unknown		|			|Seen all zeros		|
 
 ## Disconnect Request
 

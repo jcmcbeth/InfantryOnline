@@ -18,7 +18,7 @@
 
         public byte[] ReadBytes(int count)
         {
-            if (offset + count > buffer.Length)
+            if (this.offset + count > buffer.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
@@ -34,7 +34,7 @@
 
         public byte ReadByte()
         {
-            return this.buffer[offset++];
+            return this.buffer[this.offset++];
         }
 
         public int ReadInt32()
@@ -62,24 +62,47 @@
             return value;
         }
 
+        public ushort ReadUInt16()
+        {
+            ushort value = 0;
+
+            if (BitConverter.IsLittleEndian)
+            {
+                value = (ushort)((this.buffer[this.offset] << 8) |
+                    this.buffer[this.offset + 1]);
+            }
+            else
+            {
+                value = BitConverter.ToUInt16(this.buffer, this.offset);
+            }
+
+            this.offset += sizeof(short);
+
+            return value;
+        }
+
         public IPAddress ReadIPAddress()
         {
             var span = new Span<byte>(buffer, offset, 4);
+
+            offset += 4;
+
             return new IPAddress(span);
         }
 
         public string ReadString(int count)
         {
+            int length = 0;
             for (int i = 0; i < count; i++)
             {
                 if (buffer[offset + i] == 0)
                 {
-                    count = i;
+                    length = i;
                     break;
                 }
             }
 
-            var value = Encoding.ASCII.GetString(this.buffer, this.offset, count);
+            var value = Encoding.ASCII.GetString(this.buffer, this.offset, length);
             this.offset += count;
 
             return value;
@@ -96,17 +119,15 @@
         {
             int count = 0;
 
-            for (int i = 0; i < count; i++)
+            while (this.buffer[this.offset + count] != 0)
             {
-                if (buffer[offset + i] == 0)
-                {
-                    count = i;
-                    break;
-                }
+                count++;
             }
 
             var value = Encoding.ASCII.GetString(this.buffer, this.offset, count);
-            this.offset += count;
+
+            // Include the null terminator
+            this.offset += count + 1;
 
             return value;
         }
@@ -128,6 +149,53 @@
             this.offset += sizeof(short);
 
             return value;
+        }
+
+        public short ReadLittleEndianInt16()
+        {
+            short value = 0;
+
+            if (BitConverter.IsLittleEndian)
+            {
+                value = BitConverter.ToInt16(this.buffer, this.offset);
+                
+            }
+            else
+            {
+                value = (short)((this.buffer[this.offset] << 8) |
+                    this.buffer[this.offset + 1]);
+            }
+
+            this.offset += sizeof(short);
+
+            return value;
+        }
+
+        public bool CanRead()
+        {
+            return this.offset < this.buffer.Length;
+        }
+
+        public void CopyBytes(byte[] destination, int index, int length)
+        {
+            Array.Copy(this.buffer, offset, destination, index, length);
+
+            this.offset += length;
+        }
+
+        /// <summary>
+        /// Copies all the remaining bytes from the buffer into a destination array.
+        /// </summary>
+        /// <param name="destination">The destination array to copy the bytes to.</param>
+        /// <param name="index">The index in the destination array to start copying the bytes to.</param>
+        /// <returns>Number of bytes copied.</returns>
+        public int CopyBytes(byte[] destination, int index)
+        {
+            int length = this.buffer.Length - this.offset;
+
+            this.CopyBytes(destination, index, length);
+
+            return length;
         }
     }
 }
