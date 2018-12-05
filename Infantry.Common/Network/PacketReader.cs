@@ -43,10 +43,6 @@
 
             if (BitConverter.IsLittleEndian)
             {
-                //         00 01 02 03
-                // BUFFER: DD CC BB AA
-                // VALUE:  AA BB CC DD
-
                 value = (this.buffer[this.offset] << 24) |
                     (this.buffer[this.offset + 1] << 16) |
                     (this.buffer[this.offset + 2] << 8) |
@@ -83,9 +79,9 @@
 
         public IPAddress ReadIPAddress()
         {
-            var span = new Span<byte>(buffer, offset, 4);
+            var span = this.buffer.AsSpan(this.offset, 4);
 
-            offset += 4;
+            this.offset += 4;
 
             return new IPAddress(span);
         }
@@ -95,7 +91,7 @@
             int length = 0;
             for (int i = 0; i < count; i++)
             {
-                if (buffer[offset + i] == 0)
+                if (this.buffer[this.offset + i] == 0)
                 {
                     length = i;
                     break;
@@ -110,7 +106,7 @@
 
         public bool ReadBoolean()
         {
-            byte value = this.buffer[offset++];
+            byte value = this.buffer[this.offset++];
 
             return value == 1 ? true : false;
         }
@@ -178,7 +174,7 @@
 
         public void CopyBytes(byte[] destination, int index, int length)
         {
-            Array.Copy(this.buffer, offset, destination, index, length);
+            Array.Copy(this.buffer, this.offset, destination, index, length);
 
             this.offset += length;
         }
