@@ -5,27 +5,25 @@
     using System;
     using System.Collections.Generic;
     using System.Net;
-    using System.Net.Sockets;
-    using System.Text;
     using System.Threading.Tasks;
 
-    public class DirectoryClient : IDirectoryClient, IDisposable
+    public class DirectoryClient : IDirectoryClient
     {
         public const int DefaultPort = 4850;
 
-        private readonly UdpClient client;
-        private bool isDisposed = false;
+        private readonly INetworkClient networkClient;
 
-        public DirectoryClient(IPAddress address, int port = DefaultPort)
+        public DirectoryClient(INetworkClient networkClient, IPAddress address, int port = DefaultPort)
         {
             if (address == null)
             {
                 throw new ArgumentNullException(nameof(address));
             }
-            var endpoint = new IPEndPoint(address, port);
 
-            this.client = new UdpClient();
-            this.client.Connect(endpoint);
+            var endPoint = new IPEndPoint(address, port);
+
+            this.networkClient = networkClient ?? throw new ArgumentNullException(nameof(networkClient));
+            this.networkClient.Connect(endPoint);
         }
 
         public async Task<ICollection<Zone>> GetZonesAsync()
@@ -34,24 +32,6 @@
             await this.HandleClientRequest();
 
             return await this.HandleZoneListRequest();
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!isDisposed)
-            {
-                if (disposing && this.client != null)
-                {
-                    this.client.Dispose();
-                }
-
-                isDisposed = true;
-            }
         }
 
         private async Task<ICollection<Zone>> HandleZoneListRequest()
@@ -64,7 +44,7 @@
 
             var buffer = builder.GetBytes();
 
-            await this.client.SendAsync(buffer, buffer.Length);
+            await this.networkClient.SendAsync(buffer, buffer.Length);
             
             int chunkBufferLength;
             int chunk;
@@ -74,7 +54,7 @@
 
             do
             {
-                buffer = (await this.client.ReceiveAsync()).Buffer;
+                buffer = await this.networkClient.ReceiveAsync();
                 reader = new PacketReader(buffer);
 
                 reader.ReadInt16();
@@ -99,7 +79,7 @@
 
                 buffer = builder.GetBytes();
 
-                await this.client.SendAsync(buffer, buffer.Length);
+                await this.networkClient.SendAsync(buffer, buffer.Length);
 
                 chunk++;
             } while (offset < (chunkBufferLength));
@@ -142,11 +122,11 @@
 
             var buffer = builder.GetBytes();
 
-            await this.client.SendAsync(buffer, buffer.Length);
+            await this.networkClient.SendAsync(buffer, buffer.Length);
 
-            var result = await this.client.ReceiveAsync();
+            var result = await this.networkClient.ReceiveAsync();
 
-            PacketReader reader = new PacketReader(result.Buffer);
+            PacketReader reader = new PacketReader(result);
 
             reader.ReadInt16();
             reader.ReadByte();
@@ -171,7 +151,7 @@
 
             var buffer = builder.GetBytes();
 
-            await this.client.SendAsync(buffer, buffer.Length);
+            await this.networkClient.SendAsync(buffer, buffer.Length);
         }
     }
 }
