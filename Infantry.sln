@@ -1,13 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.102
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Common", "Infantry.Common\Infantry.Common.csproj", "{2D290BCD-0604-4BF1-8825-839B95AB9EE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infantry.Common", "Infantry.Common\Infantry.Common.csproj", "{2D290BCD-0604-4BF1-8825-839B95AB9EE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Tests", "Infantry.Tests\Infantry.Tests.csproj", "{D1E833E9-4A61-44D1-8F58-14187C148FAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infantry.Tests", "Infantry.Tests\Infantry.Tests.csproj", "{D1E833E9-4A61-44D1-8F58-14187C148FAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.Client", "Infantry.Client\Infantry.Client.csproj", "{26F7530E-D4B7-46A7-8FA6-50C840405BA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infantry.Client", "Infantry.Client\Infantry.Client.csproj", "{26F7530E-D4B7-46A7-8FA6-50C840405BA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infantry.LogUploader.Client", "Infantry.LogScanner\Infantry.LogUploader.Client.csproj", "{81D5CA05-1FA4-4C7A-B377-BF0A504747F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.LogUploader.Server", "Infantry.LogUploaderServer\Infantry.LogUploader.Server.csproj", "{00CC7CD7-B170-4B1B-B4F6-6916AF019A4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infantry.LogUploader.Common", "Infantry.LogUploader.Common\Infantry.LogUploader.Common.csproj", "{A7F572C1-8E04-426A-B835-580FDBF94888}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LogUploader", "LogUploader", "{1183F94B-206A-4924-83B7-C6C3CE862F06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +35,26 @@ Global
 		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26F7530E-D4B7-46A7-8FA6-50C840405BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81D5CA05-1FA4-4C7A-B377-BF0A504747F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81D5CA05-1FA4-4C7A-B377-BF0A504747F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81D5CA05-1FA4-4C7A-B377-BF0A504747F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81D5CA05-1FA4-4C7A-B377-BF0A504747F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CC7CD7-B170-4B1B-B4F6-6916AF019A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CC7CD7-B170-4B1B-B4F6-6916AF019A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CC7CD7-B170-4B1B-B4F6-6916AF019A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CC7CD7-B170-4B1B-B4F6-6916AF019A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F572C1-8E04-426A-B835-580FDBF94888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F572C1-8E04-426A-B835-580FDBF94888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F572C1-8E04-426A-B835-580FDBF94888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F572C1-8E04-426A-B835-580FDBF94888}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81D5CA05-1FA4-4C7A-B377-BF0A504747F6} = {1183F94B-206A-4924-83B7-C6C3CE862F06}
+		{00CC7CD7-B170-4B1B-B4F6-6916AF019A4D} = {1183F94B-206A-4924-83B7-C6C3CE862F06}
+		{A7F572C1-8E04-426A-B835-580FDBF94888} = {1183F94B-206A-4924-83B7-C6C3CE862F06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B38D99FE-E506-40FC-B8FE-9ED2170EC0A8}
