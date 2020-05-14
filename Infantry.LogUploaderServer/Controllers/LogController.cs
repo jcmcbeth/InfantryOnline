@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Infantry.LogUploader.Common.Models;
 using Infantry.LogUploader.Server;
@@ -15,10 +16,10 @@ namespace Infantry.LogUploaderServer.Controllers
     [Route("Logs")]
     public class LogController : ControllerBase
     {
-        private readonly string logFilePath;
+        private readonly LogUploaderConfiguration configuration;
         public LogController(IOptions<LogUploaderConfiguration> configuration)
         {
-            this.logFilePath = configuration.Value.InfantryLogPath;
+            this.configuration = configuration.Value;
         }
 
         [HttpGet]
@@ -26,9 +27,15 @@ namespace Infantry.LogUploaderServer.Controllers
         {
             this.CreateLogDirectoryIfNotExists();
 
-            var files = Directory.GetFiles(this.logFilePath);
+            var files = Directory.GetFiles(this.configuration.InfantryLogDirectory);
 
-            return this.Ok(files);
+            return this.Ok(files
+                .Select(path => new FileInfo(path))
+                .Select(info => new
+                {
+                    FileName = info.Name,
+                    Size = info.Length
+                }));
         }
 
         [HttpPost]
@@ -39,6 +46,11 @@ namespace Infantry.LogUploaderServer.Controllers
             if (file == null)
             {
                 return this.Error("No file was uploaded.");
+            }
+
+            if (this.GetTotalLogSize() > this.configuration.MaxDirectorySize)
+            {
+                return this.Error("Log file capacity has been reached. Please try again later.");
             }
 
             this.CreateLogDirectoryIfNotExists();
@@ -55,9 +67,9 @@ namespace Infantry.LogUploaderServer.Controllers
 
         private void CreateLogDirectoryIfNotExists()
         {
-            if (!Directory.Exists(this.logFilePath))
+            if (!Directory.Exists(this.configuration.InfantryLogDirectory))
             {
-                Directory.CreateDirectory(this.logFilePath);
+                Directory.CreateDirectory(this.configuration.InfantryLogDirectory);
             }
         }
 
@@ -69,13 +81,14 @@ namespace Infantry.LogUploaderServer.Controllers
             int attempts = 0;
             do
             {
-                string prefix = "";
+                string count = "";
                 if (attempts > 0)
                 {
-                    prefix = $"{attempts}.";
+                    count = $".{attempts}";
                 }
 
-                fileName = Path.Combine(this.logFilePath, prefix + $"{now:yyyy-MM-dd.HHmmss}.inflog.zip");
+                fileName = Path.Combine(this.configuration.InfantryLogDirectory,
+                    $"{now:yyyy-MM-dd.HHmmss}{count}.inflog.zip");
                 attempts++;
             } while (System.IO.File.Exists(fileName));
 
@@ -87,6 +100,13 @@ namespace Infantry.LogUploaderServer.Controllers
             var response = ResponseBase.CreateErrorResponse(message);
 
             return this.BadRequest(response);
+        }
+
+        private long GetTotalLogSize()
+        {
+            var directory = new DirectoryInfo(this.configuration.InfantryLogDirectory);
+
+            return directory.GetFiles().Sum(f => f.Length);
         }
     }
 }

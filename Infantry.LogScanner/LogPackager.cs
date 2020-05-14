@@ -1,4 +1,4 @@
-﻿namespace Infantry.LogScanner
+﻿namespace Infantry.LogUploader.Client
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@
 
     public class LogPackager
     {
-        public string CreatePackage(IEnumerable<string> files)
+        public LogPackage CreatePackage(IEnumerable<string> files)
         {
             var fileName = Path.GetTempFileName();
 
@@ -19,11 +19,17 @@
                 foreach (var fullPath in files)
                 {
                     var entryName = $"{id++}.{Path.GetFileName(fullPath)}";
-                    archive.CreateEntryFromFile(fullPath, entryName);
+                    archive.CreateEntryFromFile(fullPath, entryName, CompressionLevel.Optimal);
                 }
             }
 
-            return fileName;
+            var package = new LogPackage()
+            {
+                FileName = fileName,
+            };
+            package.SourcePaths.AddRange(files);
+
+            return package;
         }
     }
 }

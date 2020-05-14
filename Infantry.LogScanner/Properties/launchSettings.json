@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Infantry.LogUploader.Client": {
+      "commandName": "Project",
+      "commandLineArgs": "--URL \"http://localhost.fiddler:54820\""
+    }
+  }
+}

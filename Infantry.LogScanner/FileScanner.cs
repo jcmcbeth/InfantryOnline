@@ -1,4 +1,4 @@
-﻿namespace Infantry.LogScanner
+﻿namespace Infantry.LogUploader.Client
 {
     using System;
     using System.Collections.Concurrent;
@@ -12,7 +12,7 @@
 
     public class FileScanner
     {
-        public IEnumerable<string> GetFiles(string pattern)
+        public IEnumerable<string> GetFiles(string regex)
         {
             var targets = new ConcurrentBag<string>();
             var directories = GetInitialDirectories();
@@ -42,7 +42,7 @@
                                 continue;
                             }
 
-                            foreach (var fileName in SearchDirectory(currentDirectory, pattern))
+                            foreach (var fileName in SearchDirectory(currentDirectory, regex))
                             {
                                 targets.Add(fileName);
                             }
@@ -68,10 +68,8 @@
 
             foreach (var drive in drives)
             {
-                //directories.Add(drive);
+                directories.Add(drive);
             }
-
-            directories.Add(@"C:\Users\joelm\Desktop\Infantry");
 
             return directories;
         }

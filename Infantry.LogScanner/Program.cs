@@ -3,44 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Infantry.LogUploader.Client;
 
-namespace Infantry.LogScanner
+namespace Infantry.LogUploader.Client
 {
-    public class Program
+    public static class Program
     {
         public static async Task Main(string[] args)
         {
-            var scanner = new FileScanner();
-
-            var files = scanner.GetFiles(@"^Message\d{4}-\d{2}-\d{2}\.log$");
-
-            foreach (var file in files)
-            {
-                Console.WriteLine(file);
-            }
-
-            string fileName = null;
             try
             {
-                var packager = new LogPackager();
-                fileName = packager.CreatePackage(files);
+                var arguments = ArgumentParser.ParseArguments(args);
 
-                var uploader = new LogUploader(new Uri("https://localhost:44316"));
-                await uploader.UploadLogPackage(fileName);
-            }
-            finally
-            {
-                if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
+                var scanner = new FileScanner();
+
+                var files = scanner.GetFiles(@"^Message\d{4}-\d{2}-\d{2}\.log$");
+
+                LogPackage package = null;
+                try
                 {
-                    File.Delete(fileName);
+                    var packager = new LogPackager();
+                    package = packager.CreatePackage(files);
+
+                    var uploader = new LogUploaderClient(arguments.ServiceUrl);
+                    var result = await uploader.UploadPackageAsync(package);
+
+                    if (result.Errors?.Any() == true)
+                    {
+                        Console.Error.WriteLine("Failed to upload file:");
+                        foreach (var error in result.Errors)
+                        {
+                            Console.Error.WriteLine(error);
+                        }
+                    }
+                }
+                finally
+                {
+                    if (package != null)
+                    {
+                        package.Delete();
+                    }
                 }
             }
-
-            Console.WriteLine($"File: {fileName}");
-            Console.WriteLine("Press any key to quit...");
-            Console.ReadKey();
+            catch (Exception exception)
+            {
+                Console.Error.WriteLine($"Fatal error: {exception.Message}");
+            }
         }
     }
 }

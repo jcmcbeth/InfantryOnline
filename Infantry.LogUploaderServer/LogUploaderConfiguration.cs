@@ -2,6 +2,8 @@
 {
     public class LogUploaderConfiguration
     {
-        public string InfantryLogPath { get; set; }
+        public string InfantryLogDirectory { get; set; }
+
+        public long MaxDirectorySize { get; set; }
     }
 }

@@ -7,7 +7,7 @@
 
     public class ResponseBase
     {
-        public IEnumerable<string> Errors { get; set; }
+        public List<string> Errors { get; set; }
 
         public static ResponseBase CreateErrorResponse(string error)
         {
